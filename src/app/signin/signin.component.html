@@ -1,0 +1,168 @@
+<nav class="navbar-fixed-top">
+  <div class="navbar">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <ul class="nav navbar-right">
+          <li><a href="#myPage">HOME</a></li>
+          <li><a href="#summaryWorld">SUMMARY</a></li>
+          <li><a href="#pieChartWorld">REPARTITION</a></li>
+          <li><a href="#barWorld">DAILY WEEK</a></li>
+          <li><a href="#totalWorld">TOTAL</a></li>
+          <li><a href="#CountryTable">BY COUNTRY</a></li>
+          <li><button class="btn" (click)="covid19Service.signInWithGoogle()" (click)="actionSignIn()">
+              <a>Sign In with Google</a>
+            </button></li>
+          <li id='nameHTML' [innerHTML]="nameHTML" style="color: white;"></li>
+          <li><button id="SignOutHTML" class="btn btn-danger" (click)="actionSignOut()">Sign Out</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="text-center">
+  <div id="myPage" class="text-center">
+    <br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <img style="width: 50%"
+      src="https://firebasestorage.googleapis.com/v0/b/covid-19-7a9fb.appspot.com/o/logocovidpage.png?alt=media&token=103c9863-0ea3-4cf4-91d4-61b71d46d246"
+      alt="Covid-19 logo" />
+  </div>
+  <h1>Worldwide Data</h1>
+
+  <br><br><br><br><br><br><br><br>
+    <div  id='AddNewsBloc' >
+      <div class="form-group shadow-textarea">
+      <textarea #myArea placeholder="Enter your News here .." id="WorldNews" rows="10"></textarea>
+      </div><br>
+      <button (click)="onSubmit(myArea.value)" (click)="updateNews()">Submit your News</button>
+    </div>
+
+    <br><br><br><br><br><br><br><br>
+
+    <div style="font-size: large; font-style: italic;" class="text-center">
+      <p>Worldwide News</p>
+      <marquee scrollamount="4">{{ News }}</marquee>
+    </div>
+
+  
+
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+    <!-- Table Worldwide Data -->
+    <div id="summaryWorld" class="container my-9">
+      <br><br><br><br><br><br>
+      <div class="table-active">
+        <h1>Corona Virus Summary Worldwide on {{ DateToday }}</h1>
+      </div>
+      <table class="table table-bordered table-striped">
+        <thead>
+        </thead>
+        <tbody>
+          <tr style="background-color: rgba(249,226,166);">
+            <th>Total Cases</th>
+            <td>{{ globalsummary.TotalConfirmed }}</td>
+          </tr>
+          <tr style="background-color: rgba(249,226,166);">
+            <th>New Cases</th>
+            <td>{{ globalsummary.NewConfirmed }}</td>
+          </tr>
+          <tr style="background-color: rgba(249,226,166);">
+            <th>Active Cases</th>
+            <td>{{ ActiveCases }}</td>
+          </tr>
+          <tr style="background-color:rgba(148,198,239)">
+            <th>Total Recovered</th>
+            <td>{{ globalsummary.TotalRecovered }}</td>
+          </tr>
+          <tr style="background-color:rgba(148,198,239)">
+            <th>New Recovered</th>
+            <td>{{ globalsummary.NewRecovered }}</td>
+          </tr>
+          <tr style="background-color:rgba(148,198,239)">
+            <th>Recovery Rate</th>
+            <td>{{ RecoveryRate }}%</td>
+          </tr>
+          <tr style="background-color:rgba(225,155,171)">
+            <th>Total Deaths</th>
+            <td>{{ globalsummary.TotalDeaths }}</td>
+          </tr>
+          <tr style="background-color:rgba(225,155,171)">
+            <th>New Deaths</th>
+            <td>{{ globalsummary.NewDeaths }}</td>
+          </tr>
+          <tr style="background-color:rgba(225,155,171)">
+            <th>Mortality Rate</th>
+            <td>{{ MortalityRate }}%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <!-- Pie Chart Cases -->
+    <div id="pieChartWorld" class="chart-wrapper" class="container text-center">
+      <br><br><br><br><br>
+      <div class="table-active">
+        <h1>Corona Virus Cases Distribution Worldwide on {{ DateToday }}</h1>
+      </div>
+      <canvas baseChart [datasets]="ChartData" [labels]="ChartLabels" [options]="ChartOptions" [colors]="ChartColors"
+        [legend]="ChartLegend" [chartType]="ChartType" [plugins]="ChartPlugins">
+      </canvas>
+    </div>
+  
+  <br><br><br><br>
+  <br><br><br><br><br>
+  <div style="font-size: large; font-style: italic;" class="text-center">
+    <p>Worldwide News</p>
+    <marquee scrollamount="6">{{ News }}</marquee>
+  </div>
+
+  <br><br><br><br><br><br><br><br>
+  <!-- Bar Chart Week  -->
+  <div id="barWorld" class="container my-9">
+    <div class="table-active">
+      <h1>Daily Corona Virus Cases Worldwide</h1>
+    </div>
+    <div class="container text-center">
+      <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+        [legend]="barChartLegend" [chartType]="barChartType">
+      </canvas>
+    </div>
+  </div>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+  <!-- Line Chart Dayone  -->
+  <div id="totalWorld"class="container my-9">
+    <div class="table-active">
+      <h1>Total Corona Virus Cases Worldwide</h1>
+    </div>
+    <div class="container text-center">
+      <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+        [legend]="lineChartLegend" [chartType]="lineChartType">
+      </canvas>
+    </div>
+  </div>
+  <br><br><br><br><br><br><br><br><br>
+
+  <!-- Summary By Country Table  -->
+  <div class="container my-9">
+    <h1 class="table-active">Corona Virus Cases by Country on {{ DateToday }}</h1>
+  </div>
+  <div class="text-center">
+    <ag-grid-angular #agGrid id="CountryTable" style="width: 1400px; height: 500px; margin: auto;"
+      class="ag-theme-material" [rowData]="countriessummary" [columnDefs]="columnDefs" [rowSelection]="rowSelection"
+      (rowSelected)="onRowSelected($event)">
+    </ag-grid-angular>
+  </div>
+
+  <br><br><br><br><br><br><br><br>
+
+    <div style="font-size: large; font-style: italic;" class="text-center">
+      <p>Worldwide News</p>
+      <marquee scrollamount="8">{{ News }}</marquee>
+    </div>
+  <br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+</div>
+
